@@ -820,8 +820,8 @@ StyledStreamWriter::normalizeEOL( const std::string &text )
 
 std::ostream& operator<<( std::ostream &sout, const Value &root )
 {
-   Json::StyledStreamWriter writer;
-   writer.write(sout, root);
+   Json::FastWriter writer;
+   sout << writer.write( root );
    return sout;
 }
 
