@@ -47,5 +47,24 @@ list(GET _VERSION_LIST 0 VERSION_MAJOR)
 list(GET _VERSION_LIST 1 VERSION_MINOR)
 list(GET _VERSION_LIST 2 VERSION_BUILD)
 
+# Platform
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+  set(MACOSX TRUE)
+else()
+  if (WIN32)
+    set(WINDOWS TRUE)
+
+    # Visual Studio creates configuration sub-folders in the output
+    foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
+      string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
+      set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${LIBDIR} )
+      set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${LIBDIR} )
+      set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${BINDIR} )
+    endforeach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
+  else()
+    set(LINUX TRUE)
+  endif (WIN32)
+endif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+
 # C++
 include(${ROOT}/Cpp.cmake)
